@@ -185,6 +185,62 @@ MyPromise.prototype.then = function (onfulfilled, onrejected) {
   return promise;
 };
 
+MyPromise.prototype.catch = function (catchFunc) {
+  return this.then(null, catchFunc);
+};
+
+MyPromise.resolve = function (data) {
+  return new MyPromise((resolve) => {
+    resolve(data);
+  });
+};
+
+MyPromise.reject = function (data) {
+  return new MyPromise((resolve, reject) => {
+    reject(data);
+  });
+};
+
+MyPromise.all = function (promiseArray) {
+  if (!Array.isArray(promiseArray)) {
+    throw new Error('The arguments should be an array');
+  }
+  return new MyPromise((resolve, reject) => {
+    try {
+      let resultArray = [];
+      const length = promiseArray.length;
+
+      for (let i = 0; i < length; i++) {
+        promiseArray[i].then((data) => {
+          resultArray.push(data);
+          if (resultArray.length === length) {
+            resolve(resultArray);
+          }
+        }, reject);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+MyPromise.race = function (promiseArray) {
+  if (!Array.isArray(promiseArray)) {
+    throw new Error('The arguments should be an array');
+  }
+
+  return new MyPromise((resolve, reject) => {
+    try {
+      const length = promiseArray.length;
+      for (let i = 0; i < length; i++) {
+        promiseArray[i].then(resolve, reject);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 // test code
 let pms = new MyPromise((resolve, reject) => {
   setTimeout(() => {
