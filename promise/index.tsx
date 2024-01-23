@@ -3,6 +3,7 @@
  * 支持异步
  * 支持连续.then
  * 支持链式调用
+ * 支持 Promise穿透
  */
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
@@ -58,10 +59,10 @@ const resolvePromise = (promise, result, resolve, reject) => {
   /**
    * 处理循环引用的情况, 如:
    * let promise = new MyPromise((resolve, reject) => {
-   * resolve(123);
+   *  resolve(123);
    * });
    * let promise2 = promise.then(() => {
-   * return promise2; // 这里返回了 promise2 自身
+   *  return promise2; // 这里返回了 promise2 自身
    * });
    */
   if (promise === result) {
@@ -184,35 +185,35 @@ MyPromise.prototype.then = function (onfulfilled, onrejected) {
   return promise;
 };
 
-// // test code
-// let pms = new MyPromise((resolve, reject) => {
-//   setTimeout(() => {
-//     resolve('hello');
-//   }, 1000);
-// });
+// test code
+let pms = new MyPromise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('hello');
+  }, 1000);
+});
 
-// // 连续调用
-// pms.then(() => {
-//   console.log('1');
-// });
+// 连续调用
+pms.then(() => {
+  console.log('1');
+});
 
-// pms.then(() => {
-//   console.log('2');
-// });
+pms.then(() => {
+  console.log('2');
+});
 
-// // 链式调用
-// pms
-//   .then(() => {
-//     console.log('1');
-//     return '2 next then';
-//   })
-//   .then((res) => {
-//     console.log(res);
-//   });
+// 链式调用
+pms
+  .then(() => {
+    console.log('1');
+    return '2 next then';
+  })
+  .then((res) => {
+    console.log(res);
+  });
 
-// console.log('代码应该比 promise.then 先输出');
+console.log('代码应该比 promise.then 先输出');
 
-// 显示返回一个 promise 实例
+// 显式返回一个 promise 实例
 const pms2 = new MyPromise((resolve) => {
   setTimeout(() => {
     resolve('world');
@@ -231,3 +232,14 @@ pms2
   .then((data) => {
     console.log(data);
   });
+
+// Promise 穿透
+const pms3 = new MyPromise((resolve) => {
+  setTimeout(() => {
+    resolve('1');
+  }, 1000);
+});
+
+pms3.then(null).then((data) => {
+  console.log(data);
+});
