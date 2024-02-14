@@ -29,6 +29,7 @@ function MyPromise(fn) {
       return value.then(resolve, reject);
     }
     // 为了不影响同步任务，执行逻辑放到任务队列中
+    // setTimeout 非最佳实践，可以用 mutationObserver 或 queueMicrotask替代
     setTimeout(() => {
       if (self.status === PENDING) {
         self.value = value;

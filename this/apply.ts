@@ -7,9 +7,9 @@ Function.prototype['myApply'] = function (context, arguments) {
   context = context || window;
   // 创建一个唯一的属性以避免覆盖原有属性
   const fnSymbol = Symbol();
-  context['fnSymbol'] = this;
+  context[fnSymbol] = this;
 
-  const result = context['fnSymbol'](arguments);
+  const result = context[fnSymbol](arguments);
 
   // 删除添加的属性
   delete context[fnSymbol];
