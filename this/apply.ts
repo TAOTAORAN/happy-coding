@@ -1,6 +1,6 @@
 Function.prototype['myApply'] = function (context, arguments) {
   // 判断调用对象是否为函数
-  if (typeof context !== 'function') {
+  if (typeof this !== 'function') {
     throw Error('The call must come from a function');
   }
 
