@@ -36,8 +36,6 @@ F.prototype = Animal.prototype;
 Cat.prototype = new F();
 Cat.prototype.constructor = Cat;
 
-// 方式五：拷贝继承 把父对象的所有属性和方法拷贝给子对象
-
 /**
  * 对象继承
  */
@@ -51,9 +49,9 @@ function inherit(parentObj) {
 // 方式二：对象浅拷贝/深拷贝
 
 // 实现 寄生组合式继承/extends
-function myExtends(child, parent) {
-  child.prototype = Object.create(parent.prototype);
-  child.prototype.constructor = child;
+function myExtends(childFn, parentFn) {
+  childFn.prototype = Object.create(parentFn.prototype);
+  childFn.prototype.constructor = childFn;
 }
 
 function Parent(name) {
