@@ -1,5 +1,5 @@
 Function.prototype['myBind'] = function (context, ...arguments) {
-  if (typeof context !== 'function') {
+  if (typeof this !== 'function') {
     throw Error('The call must come from a function');
   }
   const fn = this;
