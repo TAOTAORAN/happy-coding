@@ -9,7 +9,7 @@ Function.prototype['myBind'] = function (context, ...arguments) {
     if (this instanceof bindFn) {
       return fn.apply(this, [...arguments, ...callArgs]);
     } else {
-      return fn.call(context, arguments);
+      return fn.apply(context, arguments);
     }
   };
 
