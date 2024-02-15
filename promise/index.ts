@@ -1,19 +1,19 @@
 /**
- * 支持resolve reject .then
+ * 支持 resolve reject .then
  * 支持异步
- * 支持连续.then
+ * 支持连续 .then
  * 支持链式调用
- * 支持 Promise穿透
+ * 支持 Promise 穿透
  */
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const REJECT = 'reject';
 
 function MyPromise(fn) {
-  const self = this; // 指向Promise实例
+  const self = this; // 指向 Promise 实例
   this.status = PENDING;
-  this.value = null; // 经过resolve处理后的值
-  this.reason = null; // 经过reject处理后的值
+  this.value = null; // 经过 resolve / reject 处理后的值
+
   /**
    * 支持异步，需要存下来 onfulfilled
    * this.onFulfilledFn = Function.prototype;
@@ -29,7 +29,7 @@ function MyPromise(fn) {
       return value.then(resolve, reject);
     }
     // 为了不影响同步任务，执行逻辑放到任务队列中
-    // setTimeout 非最佳实践，可以用 mutationObserver 或 queueMicrotask替代
+    // setTimeout 非最佳实践，可以用 mutationObserver 或 queueMicrotask 替代
     setTimeout(() => {
       if (self.status === PENDING) {
         self.value = value;
@@ -73,9 +73,9 @@ const resolvePromise = (promise, result, resolve, reject) => {
   let thenCalledOrThrow = false; // 判断否已经执行了 onfulfilled 或 onrejected
 
   /**
-   * 通常指的是一个对象或函数，它有一个then方法，这个方法的行为类似于 Promise 的 then 方法。
+   * 通常指的是一个对象或函数，它有一个 then 方法，这个方法的行为类似于 Promise 的 then 方法。
    * 这意味着虽然这个对象可能不是一个真正的 Promise 实例，但它遵循与 Promise 相似的接口和行为模式。
-   * 在 JavaScript中，这种类型的对象被称为 "thenable"
+   * 在 JavaScript 中，这种类型的对象被称为 "thenable"
    */
   let thenable;
 
