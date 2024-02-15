@@ -6,7 +6,7 @@ function throttle(fn, interval) {
       return;
     } else {
       timer = setTimeout(() => {
-        fn();
+        fn(args);
       }, interval);
     }
   };
