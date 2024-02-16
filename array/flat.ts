@@ -15,4 +15,5 @@ function flat(arr: any[], depth = 1) {
   return result;
 }
 
+// test code
 console.log(flat([0, [1, [2, [3]]], 0], 3));
